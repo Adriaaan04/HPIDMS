@@ -1,0 +1,45 @@
+ /* Some basic styling for demonstration purposes */
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar{
+           text-align: center;
+           color: black;
+           font: sans-serif;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+            flex-direction: row; /* Arrange items horizontally */
+        }
+
+        .box {
+            flex: 1;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            text-align: center;
+            line-height: 100px;
+        }
+        
+        /* Optional: Adjust styles to differentiate between the two boxes */
+        .box:nth-child(1) {
+            background-color: #ffffff; /* Change background color */
+            border-radius: 20px; /* Add border-radius for rounded corners */
+            margin-right: 10px;
+        }
+        .box:nth-child(2) {
+            background-color: #fcfcfc; /* Change background color */
+            border-radius: 20px; /* Add border-radius for rounded corners */
+            margin-left: 10px;
+        }
+
+        .table-container {
+            margin: 10px; /* Adjust margin-right as needed */
+            padding: 0px; /* Adjust padding as needed */
+            border: 1px solid #ccc; /* Border style */
+            border-radius: 10px; /* Border radius */
+        }
+       
+        
