@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #f04549;
+  background-image: linear-gradient(#ff0004, rgb(0, 0, 0));
   margin: 0;
   padding: 0;
 }

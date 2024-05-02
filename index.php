@@ -14,7 +14,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
     <style>
     .list-group-item {
         border: none;
@@ -151,6 +151,16 @@
         margin: 0 auto;
         /* Center the image horizontally by setting auto margins */
     }
+
+    #item {
+
+        align-items: center;
+    }
+
+    .custom-margin-left-text {
+        margin-left: 50px;
+        /* Adjust the value as needed */
+    }
     </style>
 
 </head>
@@ -172,10 +182,21 @@
                 </a>
 
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
-                    href="document-trays.php">
-                    <i class="bx bx-file file-icon"></i>
-                    Document Trays
+                    href="#" id="document-trays-link">
+                    <i class="bx bx-file file-icon"></i> Document Trays
                 </a>
+                <div id="document-trays-list" style="display: none;">
+                    <!-- Your document trays list here -->
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
+                        id="item" href="document-trays.php">
+                        <span class="custom-margin-left-text">Invoice</span>
+                    </a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center "
+                        id="item" href="#">
+                        <span class="custom-margin-left-text">After Invoice</span>
+                    </a>
+                    <!-- Add more items as needed -->
+                </div>
 
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
                     href="404.php">
@@ -222,10 +243,9 @@
                                         </div>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#!">Action</a>
-                                        <a class="dropdown-item" href="#!">Another action</a>
+                                        <a class="dropdown-item" href="#!">Profile Settings</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">Something else here</a>
+                                        <a class="dropdown-item logout-link" href="login.php">Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -552,6 +572,41 @@
             previewDocument(documentInfo);
         });
     }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#document-trays-link").click(function(e) {
+            e.preventDefault();
+            $("#document-trays-list").toggle();
+        });
+    });
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const logoutLinks = document.querySelectorAll(".logout-link");
+
+        logoutLinks.forEach(function(logoutLink) {
+            logoutLink.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Are you sure you want to Logout?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, logout"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the logout page
+                        window.location.href = logoutLink.href;
+                    }
+                });
+            });
+        });
+    });
     </script>
 
 </body>
