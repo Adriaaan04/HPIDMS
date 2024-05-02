@@ -28,13 +28,6 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" maxlength="15" placeholder="Enter password" required>
         <label for="username">Select Department:</label>
-        <select id="department">
-          <option value="select">Select Department...</option>
-          <option value="admin">Admin</option>
-          <option value="bidding">Bidding</option>
-          <option value="it">IT</option>
-          <option value="industrial">Industrial</option>
-        </select>
         <button type="submit" class="submit-btn" name="signIn">Sign In <i class="fa-solid fa-right-to-bracket"></i></button>
       </form>
     </div>
