@@ -1,0 +1,120 @@
+
+* {
+    font-family: "Poppins";
+}
+
+body {
+  background-color: #f04549;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-shadow: 0 4px 8px rgba(3, 3, 3, 0.9);
+  background-color: rgba(59, 58, 58, 0.2);
+}
+
+
+  .login-form img {
+    justify-content: center;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header img {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+  }
+  
+  .login-form {
+    background-color: #fff;
+    padding: 28px;
+    border-radius: 13px;
+    box-shadow: 10px 20px 15px rgba(0, 0, 0, 0.2);
+    animation: slide-up 0.5s ease-in-out forwards;
+  }
+  
+  @keyframes slide-up {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 2px rgb(212, 127, 127);
+  }
+  
+  .login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 6px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    margin-bottom: 13px;
+  }
+  
+  .login-form button {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    background-color: #e01f1f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 10px;
+  }
+
+  .login-form button:hover {
+    background-color: #d3503f;
+    cursor: pointer;
+  }
+
+  .container select {
+    width: 104%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 30px;
+  }
+
+ form a{
+   text-decoration: none;
+   color: #d3503f;
+ }
+
+ form a:hover{
+   text-decoration: underline;
+ }
+ 
