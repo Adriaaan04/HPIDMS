@@ -4,235 +4,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User-Friendly Sidebar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.0/viewer.min.css">
+    <title>Dynamic Card Addition</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
+    /* Custom CSS for horizontal alignment */
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
     }
 
-    /* Content area */
-    .content {
-        padding: 20px;
-        display: none;
+    .card {
+        margin-right: 15px;
+        /* Add margin between cards */
+        margin-bottom: 15px;
     }
 
-    .content.active {
-        display: block;
+    .custom-search-bar {
+        width: 400px;
+        /* Adjust the width as needed */
     }
 
-    /* Upload Files page styling */
-    #upload h2 {
-        margin-bottom: 20px;
-        font-size: 24px;
-        color: #020101;
-        /* Adjusted heading color */
-    }
-
-    #departmentSelect {
-        padding: 8px;
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
-
-    #fileInput {
-        margin-bottom: 20px;
-    }
-
-    #upload button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    #upload button:hover {
-        background-color: #45a049;
-    }
-
-    /* Adjusted styling for document list and preview area */
-    .section {
+    .card-container {
+        margin-left: 30px;
         margin-top: 30px;
     }
 
-    #documentList {
+    .navbar {
+        padding-bottom: 30px;
+    }
+
+    /* Custom CSS for horizontal alignment */
+
+
+    .custom-search-bar {
         width: 100%;
-        border-collapse: collapse;
+        max-width: 400px;
     }
 
-    #documentList th,
-    #documentList td {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
+    @media (min-width: 576px) {
+        .custom-search-bar {
+            width: 300px;
+        }
     }
 
-    #documentList th {
-        background-color: #f2f2f2;
+    @media (min-width: 768px) {
+        .custom-search-bar {
+            width: 300px;
+        }
     }
 
-    #documentList td:last-child {
-        text-align: center;
+    @media (min-width: 992px) {
+        .custom-search-bar {
+            width: 500px;
+        }
     }
 
-
-
-    /* History Log table styling */
-    #historyLog {
-        width: 50%;
-        /* Occupy half of the screen width */
-        max-height: 60vh;
-        /* Adjusted max-height for better visibility */
-        border-collapse: collapse;
-        overflow-y: auto;
-        /* Enable vertical scrolling */
-        box-sizing: border-box;
-        border-right: 2px solid #ddd;
-        /* Slightly thicker border for separation */
-        float: left;
-        table-layout: fixed;
-        /* Ensure fixed table layout */
+    @media (min-width: 1200px) {
+        .custom-search-bar {
+            width: 600px;
+        }
     }
 
-    #historyLog th,
-    #historyLog td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        white-space: nowrap;
-        /* Prevent wrapping of file names */
-        overflow: hidden;
-        /* Hide overflowing content */
-        text-overflow: ellipsis;
-        /* Show ellipsis for overflowed content */
+    .btn {
+        margin-left: 20px;
     }
 
-    #historyLog th {
-        background-color: #f2f2f2;
-        font-weight: bold;
+    h2 {
+        margin: 30px;
     }
 
-    /* Preview area styling */
-    #preview {
-        width: 50%;
-        /* Occupy half of the screen width */
-        height: 60vh;
-        /* Adjusted height for better visibility */
-        overflow-y: auto;
-        /* Enable vertical scrolling */
-        box-sizing: border-box;
-        border-left: 2px solid #ddd;
-        /* Slightly thicker border for separation */
-        float: right;
+    /* Adjust margin for dropdown */
+    .dropdown {
+        margin-left: 10px;
     }
 
-    /* Modal styling */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.6);
-        /* Darker overlay for better focus */
+    /* .modal {
+        margin-top: 90px;
+    } */
+
+    .modal-dialog {
+        top: 1.5%;
+        left: 5%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+        margin: 0;
+        /* Set a maximum width for the modal */
     }
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 5px;
-        /* Added border-radius for smoother corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        /* Added box shadow for depth */
-        width: 60%;
-        max-width: 500px;
+        width: 100%;
+        /* Set the content width to 100% */
     }
 
-    .close {
-        color: #aaa;
-        font-size: 24px;
-        font-weight: bold;
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        cursor: pointer;
+    .modal-body {
+        max-width: 100%;
+        /* Ensure the body width can expand */
     }
 
-    .close:hover,
-    .close:focus {
-        color: #333;
-        /* Adjusted hover color for better contrast */
+    .embed-responsive {
+        overflow: auto;
+        /* Allow scrolling if content overflows */
     }
 
-    tr:hover {
-        cursor: pointer;
+    .card-body .bx.bxs-file-pdf {
+        font-size: 200px;
+        /* Adjust the size as needed */
+        margin-bottom: 5px;
+        margin-left: 25px;
+        /* Optional: Add some space between the icon and the file name */
     }
     </style>
 </head>
 
 <body>
-    <section id="upload" class="content active">
-        <h2>Upload Files</h2>
-        <select id="departmentSelect" onchange="changeDepartment()">
-            <option value="accounting">Accounting Department</option>
-            <option value="mechanical">Mechanical Department</option>
-            <option value="IT">IT Department</option>
-            <option value="electrical">Electrical Department</option>
-        </select>
-        <a href="#" onclick="showAddDepartmentModal()"><i class="fas fa-plus-circle"></i> Add Department</a>
-        <br><br>
-        <div id="addDepartmentModal" class="modal">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2 custom-search-bar" type="search" placeholder="Search"
+                    aria-label="Search">
+                <label for="fileInput" class="btn btn-success" title="Upload File"><i
+                        class='bx bxs-file-plus'></i></label>
+                <input type="file" id="fileInput" class="custom-file-input" style="display: none;">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class='bx bx-menu-alt-left'></i> View
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+    <h2> Files </h2>
+    <div class="card-container">
+
+    </div> <!-- Container for cards -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>Add Department</h2>
-                <form id="addDepartmentForm">
-                    <label for="departmentName">Department Name:</label>
-                    <input type="text" id="departmentName" name="departmentName" required>
-                    <br><br>
-                    <button type="submit">Submit</button>
-                </form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">File Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <embed id="previewFile" type="application/pdf" width="100%" height="600px" />
+                </div>
             </div>
         </div>
-        <input type="file" id="fileInput">
-        <button onclick="uploadFile()">Upload</button>
-        <div id="documentList"></div>
-        <table id="historyLog">
-            <thead>
-                <tr>
-                    <th>Document</th>
-                    <th>Uploaded at</th>
-                    <th>Size</th>
-                    <th>Action</th> <!-- New column header for Action -->
-                </tr>
-            </thead>
-            <tbody id="historyLogBody"></tbody>
-        </table>
-        <div class="section">
-            <h2>Preview Document</h2>
-            <!-- Container for displaying the document -->
-            <div id="preview"></div>
-        </div>
-    </section>
+    </div>
 
-    <section id="private-folder" class="content">
-        <h2>Private Folder</h2>
-        <p>This is the page where you can access your private folder.</p>
-    </section>
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    function initializeDocumentTraysPage() {
+        // Your JavaScript code for document-trays.php
+        // This code will be executed when document-trays.php is loaded into page-content
+        // Include any event listeners or other functionality here
+        $(document).ready(function() {
+            // Your document-trays specific JavaScript code here
+        });
+    }
+    // Call the function after content is loaded
+    initializeDocumentTraysPage();
+    </script>
+    <script>
+    $(document).ready(function() {
+        $("#fileInput").change(function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var fileContent = e.target.result;
+                var fileName = file.name;
+                var fileSize = (file.size / 1024).toFixed(2) + ' KB';
 
-    <section id="account" class="content">
-        <h2>Account</h2>
-        <p>This is the page where you can manage your account settings.</p>
-    </section>
+                // Check if the file is a PDF
+                if (file.type === "application/pdf") {
+                    // Create a new card for the PDF file
+                    var newCard = `
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <i class='bx bxs-file-pdf pdf-icon'></i> <!-- PDF icon -->
+                        <h5 class="card-title">${fileName}</h5>
+                        <p class="card-text">${fileSize}</p>
+                        <input type="hidden" class="pdf-content" value="${fileContent}">
+                    </div>
+                </div>
+            `;
+                    $(".card-container").append(newCard);
+                } else { // Display image for other file types
+                    var imageUrl = fileContent;
+                    var newCard = `
+                <div class="card" style="width: 18rem;">
+                    <img src="${imageUrl}" class="card-img-top file-image" alt="${fileName}">
+                    <div class="card-body">
+                        <h5 class="card-title">${fileName}</h5>
+                        <p class="card-text">${fileSize}</p>
+                    </div>
+                </div>
+            `;
+                    $(".card-container").append(newCard);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Show the modal when clicking the PDF file name or icon
+        $(".card-container").on('click', '.card-title, .pdf-icon', function() {
+            var fileName = $(this).closest('.card').find('.card-title').text();
+            var fileContent = $(this).closest('.card').find('.pdf-content').val();
+            $('#modalTitle').text(fileName);
+            $('#previewFile').attr('src', fileContent);
+            $('#exampleModal').modal('show');
+        });
+
+        // Show the modal when clicking the image file
+        $(".card-container").on('click', '.file-image', function() {
+            var fileName = $(this).closest('.card').find('.card-title').text();
+            var fileContent = $(this).attr('src');
+            $('#modalTitle').text(fileName);
+            $('#previewFile').attr('src', fileContent);
+            $('#exampleModal').modal('show');
+        });
+    });
+    </script>
 
 
 </body>
