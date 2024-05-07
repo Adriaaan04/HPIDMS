@@ -186,14 +186,12 @@
 
 <body>
     <div class="d-flex" id="wrapper">
-        <!-- Sidebar-->
         <div class="border-end bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading bg-light" id="sidebar-heading">
                 <img src="img/sidebar-head.jpg" alt="" height="80" width="200" id="sidebar-logo">
             </div>
 
             <div class="list-group list-group-flush">
-                <!-- Your list items here -->
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
                     href="404.php" id="lists-link">
                     <i class="bx bx-list-ol list-icon"></i>
@@ -205,7 +203,6 @@
                     <i class="bx bx-file file-icon"></i> Document Trays
                 </a>
                 <div id="document-trays-list" style="display: none;">
-                    <!-- Your document trays list here -->
                     <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
                         id="item" href="document-trays.php">
                         <span class="custom-margin-left-text">Invoice</span>
@@ -214,7 +211,6 @@
                         id="item" href="#">
                         <span class="custom-margin-left-text">After Invoice</span>
                     </a>
-                    <!-- Add more items as needed -->
                 </div>
 
                 <a class="list-group-item list-group-item-action list-group-item-light p-3 d-flex align-items-center"
@@ -290,25 +286,10 @@
     <script src="js/scripts.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $(".document-link").click(function(e) {
-            e.preventDefault();
-            var fileToInclude = $(this).data("file");
-            // AJAX call to load the specified file into page-content
-            $.ajax({
-                url: fileToInclude,
-                success: function(data) {
-                    $("#page-content").html(data);
-                },
-                error: function() {
-                    $("#page-content").html("<p>Error loading file.</p>");
-                }
-            });
-        });
-    });
-    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
     <script>
     $(document).ready(function() {
         $("#document-trays-link").click(function(e) {
@@ -318,9 +299,14 @@
     });
     </script>
     <script>
-    $(document).ready(function() {
-        $("#document-trays-link").click(function(e) {
-            e.preventDefault();
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the Invoice link element
+        const invoiceLink = document.querySelector("#document-trays-list a[href='document-trays.php']");
+
+        // Add a click event listener to the Invoice link
+        invoiceLink.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+
             // AJAX call to load document-trays.php into page-content
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -333,6 +319,7 @@
         });
     });
     </script>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const logoutLinks = document.querySelectorAll(".logout-link");
@@ -374,6 +361,100 @@
             };
             xhttp.open("GET", "homepage.php", true);
             xhttp.send();
+        });
+    });
+    </script>
+    <script>
+    function initializeDocumentTraysPage() {
+        // Your JavaScript code for document-trays.php
+        // This code will be executed when document-trays.php is loaded into page-content
+        // Include any event listeners or other functionality here
+        $(document).ready(function() {
+            // Your document-trays specific JavaScript code here
+        });
+    }
+    // Call the function after content is loaded
+    initializeDocumentTraysPage();
+    </script>
+    <script>
+    $(document).ready(function() {
+        // Enable drag and drop for card-container
+        $(".card-container").on('dragstart', '.card', function(event) {
+            event.originalEvent.dataTransfer.setData('text', event.target.id);
+        });
+
+        $(".card-container").on('dragover', function(event) {
+            event.preventDefault();
+        });
+
+        $(".card-container").on('drop', function(event) {
+            event.preventDefault();
+            var files = event.originalEvent.dataTransfer.files;
+            handleDroppedFiles(files);
+        });
+
+        $("#fileInput").change(function(event) {
+            var files = event.target.files;
+            handleDroppedFiles(files);
+        });
+
+        function handleDroppedFiles(files) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileContent = e.target.result;
+                    var fileName = file.name;
+                    var fileSize = (file.size / 1024).toFixed(2) + ' KB';
+
+                    // Check if the file is a PDF
+                    if (file.type === "application/pdf") {
+                        // Create a new card for the PDF file
+                        var newCard = `
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <i class='bx bxs-file-pdf pdf-icon'></i> <!-- PDF icon -->
+                                <h5 class="card-title">${fileName}</h5>
+                                <p class="card-text">${fileSize}</p>
+                                <input type="hidden" class="pdf-content" value="${fileContent}">
+                            </div>
+                        </div>
+                    `;
+                        $(".card-container").append(newCard);
+                    } else { // Display image for other file types
+                        var imageUrl = fileContent;
+                        var newCard = `
+                        <div class="card" style="width: 18rem;">
+                            <img src="${imageUrl}" class="card-img-top file-image" alt="${fileName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${fileName}</h5>
+                                <p class="card-text">${fileSize}</p>
+                            </div>
+                        </div>
+                    `;
+                        $(".card-container").append(newCard);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Show the modal when clicking the PDF file name or icon
+        $(".card-container").on('click', '.card-title, .pdf-icon', function() {
+            var fileName = $(this).closest('.card').find('.card-title').text();
+            var fileContent = $(this).closest('.card').find('.pdf-content').val();
+            $('#modalTitle').text(fileName);
+            $('#previewFile').attr('src', fileContent);
+            $('#exampleModal').modal('show');
+        });
+
+        // Show the modal when clicking the image file
+        $(".card-container").on('click', '.file-image', function() {
+            var fileName = $(this).closest('.card').find('.card-title').text();
+            var fileContent = $(this).attr('src');
+            $('#modalTitle').text(fileName);
+            $('#previewFile').attr('src', fileContent);
+            $('#exampleModal').modal('show');
         });
     });
     </script>

@@ -33,9 +33,6 @@
         margin-top: 30px;
     }
 
-    .navbar {
-        padding-bottom: 30px;
-    }
 
     /* Custom CSS for horizontal alignment */
 
@@ -167,9 +164,7 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
     function initializeDocumentTraysPage() {
         // Your JavaScript code for document-trays.php
@@ -184,44 +179,66 @@
     </script>
     <script>
     $(document).ready(function() {
-        $("#fileInput").change(function(event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var fileContent = e.target.result;
-                var fileName = file.name;
-                var fileSize = (file.size / 1024).toFixed(2) + ' KB';
-
-                // Check if the file is a PDF
-                if (file.type === "application/pdf") {
-                    // Create a new card for the PDF file
-                    var newCard = `
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <i class='bx bxs-file-pdf pdf-icon'></i> <!-- PDF icon -->
-                        <h5 class="card-title">${fileName}</h5>
-                        <p class="card-text">${fileSize}</p>
-                        <input type="hidden" class="pdf-content" value="${fileContent}">
-                    </div>
-                </div>
-            `;
-                    $(".card-container").append(newCard);
-                } else { // Display image for other file types
-                    var imageUrl = fileContent;
-                    var newCard = `
-                <div class="card" style="width: 18rem;">
-                    <img src="${imageUrl}" class="card-img-top file-image" alt="${fileName}">
-                    <div class="card-body">
-                        <h5 class="card-title">${fileName}</h5>
-                        <p class="card-text">${fileSize}</p>
-                    </div>
-                </div>
-            `;
-                    $(".card-container").append(newCard);
-                }
-            };
-            reader.readAsDataURL(file);
+        // Enable drag and drop for card-container
+        $(".card-container").on('dragstart', '.card', function(event) {
+            event.originalEvent.dataTransfer.setData('text', event.target.id);
         });
+
+        $(".card-container").on('dragover', function(event) {
+            event.preventDefault();
+        });
+
+        $(".card-container").on('drop', function(event) {
+            event.preventDefault();
+            var files = event.originalEvent.dataTransfer.files;
+            handleDroppedFiles(files);
+        });
+
+        $("#fileInput").change(function(event) {
+            var files = event.target.files;
+            handleDroppedFiles(files);
+        });
+
+        function handleDroppedFiles(files) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileContent = e.target.result;
+                    var fileName = file.name;
+                    var fileSize = (file.size / 1024).toFixed(2) + ' KB';
+
+                    // Check if the file is a PDF
+                    if (file.type === "application/pdf") {
+                        // Create a new card for the PDF file
+                        var newCard = `
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <i class='bx bxs-file-pdf pdf-icon'></i> <!-- PDF icon -->
+                                <h5 class="card-title">${fileName}</h5>
+                                <p class="card-text">${fileSize}</p>
+                                <input type="hidden" class="pdf-content" value="${fileContent}">
+                            </div>
+                        </div>
+                    `;
+                        $(".card-container").append(newCard);
+                    } else { // Display image for other file types
+                        var imageUrl = fileContent;
+                        var newCard = `
+                        <div class="card" style="width: 18rem;">
+                            <img src="${imageUrl}" class="card-img-top file-image" alt="${fileName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${fileName}</h5>
+                                <p class="card-text">${fileSize}</p>
+                            </div>
+                        </div>
+                    `;
+                        $(".card-container").append(newCard);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
         // Show the modal when clicking the PDF file name or icon
         $(".card-container").on('click', '.card-title, .pdf-icon', function() {
